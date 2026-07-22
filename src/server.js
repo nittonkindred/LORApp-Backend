@@ -1,7 +1,22 @@
 import app from "./app.js";
 
-const port = process.env.PORT ?? 3000;
+import dotenv from "dotenv";
+import prisma from "./db/prisma.js";
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+dotenv.config();
+
+async function start() {
+  try {
+    await prisma.$connect();
+
+    console.log("✅ Connected to PostgreSQL");
+
+    app.listen(3000, () => {
+      console.log("🚀 Server running on port 3000");
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+start();
