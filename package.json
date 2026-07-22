@@ -1,0 +1,25 @@
+{
+  "name": "lor_app",
+  "version": "1.0.0",
+  "description": "A Runeterra app that features around the game Legends of Runeterra",
+  "keywords": [
+    "legends-of-runeterra",
+    "runeterra",
+    "lor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "LOR app"
+  },
+  "license": "ISC",
+  "author": "Kiều Trung Tín",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
