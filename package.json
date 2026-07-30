@@ -17,11 +17,15 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "import:data": "node src/scripts/importRuneterraData.js",
+    "import:data:optimized": "node src/scripts/importRuneterraDataOptimized.js",
+    "import:data:local": "node src/scripts/importRuneterraDataLocal.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.9.0",
+    "adm-zip": "^0.6.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",

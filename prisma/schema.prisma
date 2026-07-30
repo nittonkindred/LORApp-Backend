@@ -5,3 +5,171 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum CardType {
+  CHAMPION
+  UNIT
+  SPELL
+  LANDMARK
+  EQUIPMENT
+  ABILITY
+  TRAP
+}
+
+enum Rarity {
+  COMMON
+  RARE
+  EPIC
+  CHAMPION
+  NONE
+}
+
+enum Format {
+  STANDARD
+  ETERNAL
+}
+
+enum SpellSpeed {
+  BURST
+  FAST
+  SLOW
+  FOCUS
+}
+
+model Card {
+  id       String @id @default(uuid())
+  cardCode String @unique
+  name     String
+
+  description        String?
+  levelUpDescription String?
+  flavorText         String?
+
+  cost   Int
+  attack Int?
+  health Int?
+
+  collectible Boolean @default(true)
+  isToken     Boolean @default(false)
+
+  artistName String?
+
+  expansionId String
+  expansion   Expansion @relation(fields: [expansionId], references: [id])
+
+  cardType   CardType
+  rarity     Rarity
+  format     Format
+  spellSpeed SpellSpeed?
+
+  gameImageUrl     String?
+  fullImageUrl     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  keywords CardKeyword[]
+  subtypes CardSubtype[]
+  regions  CardRegion[]
+
+  sourceAssociations CardAssociation[] @relation("SourceCard")
+  targetAssociations CardAssociation[] @relation("TargetCard")
+}
+
+model Expansion {
+  id          String    @id @default(uuid())
+  code        String    @unique
+  name        String
+  icon        String?
+
+  // Relations
+  cards Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Region {
+  id    String  @id @default(uuid())
+  code  String  @unique
+  name  String
+  icon  String?
+  color String?
+
+  // Relations
+  cards CardRegion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Keyword {
+  id          String  @id @default(uuid())
+  code        String  @unique      
+  name        String  
+  description String?
+
+  // Relations
+  cards CardKeyword[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subtype {
+  id   String @id @default(uuid())
+  name String @unique
+
+  // Relations
+  cards CardSubtype[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CardKeyword {
+  cardId    String
+  keywordId String
+
+  card    Card    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  keyword Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, keywordId])
+  @@index([keywordId])
+}
+
+model CardSubtype {
+  cardId    String
+  subtypeId String
+
+  card    Card    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  subtype Subtype @relation(fields: [subtypeId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, subtypeId])
+  @@index([subtypeId])
+}
+
+model CardRegion {
+  cardId   String
+  regionId String
+
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  region Region @relation(fields: [regionId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, regionId])
+  @@index([regionId])
+}
+
+model CardAssociation {
+  sourceCardId String
+  targetCardId String
+
+  sourceCard Card @relation("SourceCard", fields: [sourceCardId], references: [id], onDelete: Cascade)
+  targetCard Card @relation("TargetCard", fields: [targetCardId], references: [id], onDelete: Cascade)
+
+  @@id([sourceCardId, targetCardId])
+  @@index([targetCardId])
+}
+
+
