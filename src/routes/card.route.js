@@ -1,13 +1,9 @@
 import { Router } from "express";
-import {
-  getCards,
-  getCardByCode,
-  searchCards,
-} from "../controllers/card.controller.js";
+import { getCards, getCardByCode } from "../controllers/card.controller.js";
+import { validateCardQuery } from "../middlewares/validatorMiddleware.js";
 const router = Router();
 
-router.get("/", getCards);
-router.get("/search", searchCards);
+router.get("/", validateCardQuery, getCards);
 router.get("/:cardCode", getCardByCode);
 
 export default router;

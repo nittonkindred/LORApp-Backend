@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import routes from "./routes/health.js";
 import cardRoutes from "./routes/card.route.js";
+import metadataRoutes from "./routes/metadata.route.js";
+import userRoutes from "./routes/user.route.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -29,5 +31,7 @@ app.use(cookieParser());
 
 app.use("/api/health", routes);
 app.use("/api/cards", cardRoutes);
+app.use("/api", metadataRoutes);
+app.use("/api/auth", userRoutes);
 
 export default app;

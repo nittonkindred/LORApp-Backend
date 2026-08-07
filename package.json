@@ -17,10 +17,7 @@
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "nodemon src/server.js",
-    "import:data": "node src/scripts/importRuneterraData.js",
-    "import:data:optimized": "node src/scripts/importRuneterraDataOptimized.js",
-    "import:data:local": "node src/scripts/importRuneterraDataLocal.js"
+    "start": "nodemon src/server.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.0",
