@@ -70,7 +70,17 @@ export const getCards = async (query) => {
     }),
     ...(spellSpeed && { spellSpeed }),
   };
+  if (minCost || maxCost) {
+    where.cost = {};
 
+    if (minCost) {
+      where.cost.gte = Number(minCost);
+    }
+
+    if (maxCost) {
+      where.cost.lte = Number(maxCost);
+    }
+  }
   const [cards, total] = await Promise.all([
     prisma.card.findMany({
       skip,

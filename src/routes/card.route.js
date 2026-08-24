@@ -1,9 +1,13 @@
 import { Router } from "express";
 import { getCards, getCardByCode } from "../controllers/card.controller.js";
-import { validateCardQuery } from "../middlewares/validatorMiddleware.js";
+import {
+  authMiddleware,
+  validateCardQuery,
+} from "../middlewares/validatorMiddleware.js";
 const router = Router();
-
-router.get("/", validateCardQuery, getCards);
-router.get("/:cardCode", getCardByCode);
+router.use(authMiddleware); // Apply authMiddleware to all routes in this router
+router.use(validateCardQuery); // Apply validateCardQuery middleware to all routes in this router
+router.get("/", getCards);
+router.get("/detail/:cardCode", getCardByCode);
 
 export default router;

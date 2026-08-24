@@ -6,7 +6,9 @@ import morgan from "morgan";
 import routes from "./routes/health.js";
 import cardRoutes from "./routes/card.route.js";
 import metadataRoutes from "./routes/metadata.route.js";
-import userRoutes from "./routes/user.route.js";
+import userRoutes from "./routes/auth.route.js";
+import deckRoutes from "./routes/deck.route.js";
+import profileRoutes from "./routes/user.route.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -33,5 +35,7 @@ app.use("/api/health", routes);
 app.use("/api/cards", cardRoutes);
 app.use("/api", metadataRoutes);
 app.use("/api/auth", userRoutes);
+app.use("/api/decks", deckRoutes);
+app.use("/api/users", profileRoutes);
 
 export default app;

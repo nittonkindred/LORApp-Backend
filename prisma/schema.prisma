@@ -34,6 +34,7 @@ model Card {
   keywords           CardKeyword[]
   regions            CardRegion[]
   subtypes           CardSubtype[]
+  deckCards          DeckCard[]
 }
 
 model Expansion {
@@ -119,7 +120,15 @@ model User {
   id           String   @id @default(uuid())
   username     String   @unique
   email        String   @unique
-  passwordHash String
+  passwordHash String 
+  refreshToken String?
+
+  passwordResetToken  String?
+  passwordResetExpiry DateTime?
+
+  decks        Deck[]
+  favorites    DeckFavorite[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -152,4 +161,43 @@ enum SpellSpeed {
   FAST
   SLOW
   FOCUS
+}
+
+
+model Deck {
+  id          String   @id @default(uuid())
+  code        String?
+
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isPublic    Boolean @default(false)
+  format      Format?
+  cards       DeckCard[]
+  favorites   DeckFavorite[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+model DeckCard {
+  deckId String
+  cardId String
+  count  Int    @default(1)
+
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@id([deckId, cardId])
+  @@index([cardId])
+}
+
+model DeckFavorite {
+  userId    String
+  deckId    String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  @@id([userId, deckId])
+  @@index([deckId])
 }
